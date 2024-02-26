@@ -1,0 +1,8 @@
+{
+  "type":"postgres",
+  "host":"postgres-sales-db", // Nome do serviço do Postgres no docker-compose
+  "port":5432,
+  "username":"",
+  "password":"",
+  "database":""
+}

@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  sales-api:
+    container_name: sales-api
+    build: .
+    volumes:
+      - .:/home/node/api
+      - /home/node/api/node_modules
+    entrypoint: ["/bin/sh", "./init.sh"]
+    depends_on:
+      - postgres-sales-db
+    networks:
+      - sales-network
+    ports:
+      - "${SERVER_PORT}:3333"
+    env_file:
+      - .env
+
+  postgres-sales-db:
+    container_name: postgres-sales-db
+    image: postgres:latest
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-sales-data:/data
+    networks:
+      - sales-network
+
+volumes:
+  postgres-sales-data:
+
+networks:
+  sales-network:
+    driver: bridge
